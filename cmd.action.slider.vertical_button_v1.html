@@ -1,0 +1,200 @@
+<div class="cmd cmd-widget" data-type="action" data-subtype="slider" data-template="button" data-cmd_id="#id#" data-cmd_uid="#uid#" data-version="#version#" data-eqLogic_id="#eqLogic_id#">
+  <!-- ################ Slider Vertical Button v1 ################ 
+  Widget name : cmd.action.slider.vertical_button_v1
+  Author : Phpvarious
+  Version : 2023/12/14 Création
+  Link : https://phpvarious.github.io/documentation/widget/fr_FR/widget_scenario/distribution_energie/
+  Tested with Jeedom V4.3.20
+-->
+  <div class="title #hide_name#">
+    <div class="cmdName">#name_display#</div>
+  </div>
+  <div class="content-sm">
+    <input type="text" class="input-sm form-control in_value#id# hidden" value="#state# #unite#" disabled/>
+    <a class="btn#id# btn-top#id# bt_plus"><i class="fa fa-plus"></i></a>
+    <div id="slider-vertical" class="slider slider#id#">
+      <div class="value#id#">#state#</div>
+    </div>
+    <a class="btn#id# btn-bottom#id# bt_minus"><i class="fas fa-minus"></i></a>
+  </div>
+  <style>
+    :root {
+      --width#id# : 40px;
+      --height#id# : 100px;
+      --bt-background#id# : var(--btnEq-default-color);
+      --bt-color#id# : var(--link-color);
+      --background#id# : var(--el-defaultColor);
+      --slider-background#id# : var(--link-color);
+      --text-color#id# : var(--txt-color);
+      --font-size#id# : 18px;
+      --notif-color#id# : var(--logo-primary-color);
+    }
+    .slider#id# {
+      position: relative;
+      margin: 0 32px !important;
+      height: var(--height#id#) !important;
+      display: block;
+      width: var(--width#id#) !important;
+      border-radius: 0px;
+    }
+    .slider#id# div.ui-slider-range {
+      display: block;
+      height: 250px;
+      -moz-border-radius: 250px;
+      -webkit-border-radius: 250px;
+      border-radius: 250px;
+    }
+    .slider#id#.ui-slider div.ui-slider-range {
+      background-color: var(--slider-background#id#) !important;
+      /* box-shadow: inset 0 0 4px rgba(0, 85, 151, 0.8), inset 0 0 2px rgba(0, 0, 0, 0.5); */
+    }
+    .slider#id# .ui-slider-handle.ui-corner-all.ui-state-default {
+      display: none;
+    }
+    .ui-slider.ui-slider-vertical .ui-slider-range {
+      left: unset !important;
+      width: 100% !important;
+    }
+    .slider#id#.ui-slider .ui-slider-range, .slider#id#.ui-slider .ui-corner-all.ui-slider-range {
+      border-radius: 0px !important;
+    }
+    .slider#id#.slider.ui-slider {
+      background: var(--background#id#) !important;
+      cursor: pointer;
+    }
+    .btn#id# {
+      display: inline-block;
+      color: var(--bt-color#id#) !important;
+      background-color: var(--bt-background#id#) !important;
+      width: var(--width#id#);
+      height: 28px;
+      padding: 6px 8px;
+      line-height: 16px;
+      font-size: 18px;
+    }
+    .btn-top#id# {
+      border-radius: 10px 10px 0px 0px;
+    }
+    .btn-bottom#id# {
+      border-radius: 0px 0px 10px 10px;
+    }
+    .value#id# {
+      position: absolute;
+      top: 50%;
+      z-index: 2;
+      background-color: transparent !important;
+      width: var(--width7698) !important;
+      font-size: var(--font-size#id#) !important;
+      color: var(--text-color#id#) !important;
+      text-align: center;
+      font-weight: bold;
+      line-height: 0px;
+    }
+  </style>
+  <template>
+    <div>width : Largeur du slider. [ défaut : 40 ]</div>
+    <div>height : Hauteur du slider. [ défaut : 100 ]</div>
+    <div>step : Pas utilisé pour le changement de valeur. [ défaut : 1 ]</div>
+    <div>backgroundBt : Couleur de fond des boutons. [ défaut : couleur du Core ]</div>
+    <div>colorBt : Couleur des icones des boutons. [ défaut : couleur du Core ]</div>
+    <div>backgroundSlider : Couleur de fond du slider. [ défaut : couleur du Core ]</div>
+    <div>colorCurseur : Couleur du slider. [ défaut : couleur du Core ]</div>
+    <div>colorValue : Couleur du texte. [ défaut : couleur du Core ]</div>
+    <div>sizeValue : Taille du texte de la valeur. [ défaut : 18 ]</div>
+    <div>hideValue : Masque la valeur lorsque qu'il n'y a pas de mouvement du curseur. [ défaut : 0 ]</div>
+    <div>notifUpdate : Change la couleur de la valeur lors d'un update. [ défaut : 1 ]</div>
+    <div>notifUpdateColor : Couleur de la valeur lors d'un update. [ défaut : #96c927 ]</div>
+  </template>
+  <script>
+    var step#id# = 1
+    var showValue#id# = true
+    var notifUpdate#id# = true
+    if (is_numeric('#width#')) document.documentElement.style.setProperty('--width#id#', '#width#' + 'px')
+    if (is_numeric('#height#')) document.documentElement.style.setProperty('--height#id#', '#height#' + 'px')
+    if ($.issetWidgetOptParam('#step#', 'step')) step#id# = parseFloat('#step#')
+    if ($.issetWidgetOptParam('#backgroundBt#', 'backgroundBt')) document.documentElement.style.setProperty('--bt-background#id#', '#backgroundBt#')
+    if ($.issetWidgetOptParam('#colorBt#', 'colorBt')) document.documentElement.style.setProperty('--bt-color#id#', '#colorBt#')
+    if ($.issetWidgetOptParam('#backgroundSlider#', 'backgroundSlider')) document.documentElement.style.setProperty('--background#id#', '#backgroundSlider#')
+    if ($.issetWidgetOptParam('#colorCurseur#', 'colorCurseur')) document.documentElement.style.setProperty('--slider-background#id#', '#colorCurseur#')
+    if ($.issetWidgetOptParam('#colorValue#', 'colorValue')) document.documentElement.style.setProperty('--text-color#id#', '#colorValue#')
+    if (is_numeric('#sizeValue#')) document.documentElement.style.setProperty('--font-size#id#', '#sizeValue#' + 'px')
+    if (is_numeric('#hideValue#') && '#hideValue#' == '1') {
+      showValue#id# = false
+      $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').hide()
+    }
+    if (is_numeric('#notifUpdate#') && '#notifUpdate#' == '0') notifUpdate#id# = false
+    if ($.issetWidgetOptParam('#notifUpdateColor#', 'notifUpdateColor')) document.documentElement.style.setProperty('--notif-color#id#', '#notifUpdateColor#')
+    
+    
+    $( "#slider-vertical" ).slider({
+      orientation: "vertical",
+      range: "min",
+      min: #minValue#,
+      max: #maxValue#,
+      value: ('#state#' == '') ? #minValue# : '#state#',
+      unite: '#unite#',
+      step: step#id#,
+      slide: function( event, ui ) {
+        $('.cmd[data-cmd_uid=#uid#] .in_value#id#').val(ui.value)
+        $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').empty().append(ui.value)
+      },
+      start: function( event, ui ) {
+        if (!showValue#id#) $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').show()
+      },
+      stop: function( event, ui ) {
+        jeedom.cmd.execute({id: '#id#', value: {slider: $('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()}})
+      }
+    })
+    
+    jeedom.cmd.addUpdateFunction('#id#', function(_options) {
+      let sliderValue = $( "#slider-vertical" ).slider( "option", "value" )
+      let cmd = $('.cmd[data-cmd_uid=#uid#]')
+      let position = _options.value
+      let minValue = ('#minValue#' == '') ? 0 : parseInt('#minValue#')
+      let maxValue = ('#maxValue#' == '') ? 100 : parseInt('#maxValue#')
+      if (!showValue#id#) $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').hide()
+      
+      if(!isset(_options.trigger) && showValue#id# && notifUpdate#id#) {
+        $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').attr('style', 'color: var(--notif-color#id#) !important');
+        setTimeout(function () {
+          $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').attr('style', 'color: null');
+        }, 900)
+      }
+      if (position != sliderValue) {
+        $( "#slider-vertical" ).slider( "value", position );
+        $('.cmd[data-cmd_uid=#uid#] .in_value#id#').val(position)
+        $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').empty().append(position)
+      }
+    });
+    
+    $('.cmd[data-cmd_uid=#uid#] .bt_plus').on('click', function () {
+      let max = ('#maxValue#' == '') ?  100 : parseFloat('#maxValue#')
+      let step = (isNaN(parseFloat('#step#'))) ?  1 : parseFloat('#step#')
+      if (parseFloat($('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()) <= max - step ) {
+        jeedom.cmd.refreshValue([{cmd_id :'#id#',value: parseFloat($('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()) + step, trigger :'bt_plus'}] )
+        $('.cmd[data-cmd_uid=#uid#] .in_value#id#').trigger('change')
+      }
+    })
+    
+    $('.cmd[data-cmd_uid=#uid#] .bt_minus').on('click', function () {
+      let min = ('#minValue#' == '') ? 0 : parseFloat('#minValue#')
+      let step = (isNaN(parseFloat('#step#'))) ?  1 : parseFloat('#step#')
+      if (parseFloat($('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()) >= min + step) {
+        jeedom.cmd.refreshValue([{cmd_id :'#id#',value: parseFloat($('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()) - step, trigger :'bt_minus'}])
+        $('.cmd[data-cmd_uid=#uid#] .in_value#id#').trigger('change')
+      }
+    })
+    
+    $('.cmd[data-cmd_uid=#uid#] .in_value#id#').on('change', function () {
+      if (!showValue#id#) $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').show()
+      if (typeof timerHandle#uid# !== 'undefined') {
+        clearTimeout(timerHandle#uid#)
+      }
+      timerHandle#uid# = setTimeout(function() {
+        jeedom.cmd.execute({id: '#id#', value: {slider: $('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()}})
+      }, 1000)
+    })
+    
+    jeedom.cmd.refreshValue([{cmd_id:'#id#', value: '#state#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#', trigger :'init'}])
+  </script>
+</div>
