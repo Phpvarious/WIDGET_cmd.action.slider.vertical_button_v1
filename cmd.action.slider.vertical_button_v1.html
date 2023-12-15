@@ -2,7 +2,7 @@
   <!-- ################ Slider Vertical Button v1 ################ 
   Widget name : cmd.action.slider.vertical_button_v1
   Author : Phpvarious
-  Version : 2023/12/15 22h00
+  Version : 2023/12/15 22h25
   Link : https://phpvarious.github.io/documentation/widget/fr_FR/action/slider/cmd.action.slider.vertical_button_v1/
   Tested with Jeedom V4.3.20
 -->
@@ -168,13 +168,13 @@
       if (!showValue#id#) $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').hide()
       
       if(!isset(_options.trigger) && showValue#id# && notifUpdate#id#) {
-        $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').attr('style', 'color: var(--notif-color#id#) !important');
+        $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').attr('style', 'color: var(--notif-color#id#) !important')
         setTimeout(function () {
-          $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').attr('style', 'color: null');
+          $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').css('color', '')
         }, 900)
       }
       if (position != sliderValue) {
-        $( "#slider-vertical#id#" ).slider( "value", position );
+        $( "#slider-vertical#id#" ).slider( "value", position )
         $('.cmd[data-cmd_uid=#uid#] .in_value#id#').val(position)
         $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').empty().append(position)
       }
