@@ -2,7 +2,7 @@
   <!-- ################ Slider Vertical Button v1 ################ 
   Widget name : cmd.action.slider.vertical_button_v1
   Author : Phpvarious
-  Version : 2023/12/15 20h50
+  Version : 2023/12/15 21h05
   Link : https://phpvarious.github.io/documentation/widget/fr_FR/action/slider/cmd.action.slider.vertical_button_v1/
   Tested with Jeedom V4.3.20
 -->
@@ -38,6 +38,7 @@
       display: block;
       width: var(--width#id#) !important;
       border-radius: 0px;
+      min-width: 18px;
     }
     .slider#id# div.ui-slider-range {
       display: block;
@@ -48,7 +49,6 @@
     }
     .slider#id#.ui-slider div.ui-slider-range {
       background-color: var(--slider-background#id#) !important;
-      /* box-shadow: inset 0 0 4px rgba(0, 85, 151, 0.8), inset 0 0 2px rgba(0, 0, 0, 0.5); */
     }
     .slider#id# .ui-slider-handle.ui-corner-all.ui-state-default {
       display: none;
@@ -72,7 +72,8 @@
       height: 28px;
       line-height: 16px;
       font-size: 18px;
-      padding-top: 5px
+      padding-top: 5px;
+      min-width: 18px;
     }
     .btn-top#id# {
       border-radius: 10px 10px 0px 0px;
@@ -91,6 +92,7 @@
       text-align: center;
       font-weight: bold;
       line-height: 0px;
+      min-width: 18px;
     }
   </style>
   <template>
