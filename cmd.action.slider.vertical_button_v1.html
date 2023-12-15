@@ -2,20 +2,22 @@
   <!-- ################ Slider Vertical Button v1 ################ 
   Widget name : cmd.action.slider.vertical_button_v1
   Author : Phpvarious
-  Version : 2023/12/14 Création
-  Link : https://phpvarious.github.io/documentation/widget/fr_FR/widget_scenario/distribution_energie/
+  Version : 2023/12/15 07h00
+  Link : https://phpvarious.github.io/documentation/widget/fr_FR/action/slider/cmd.action.slider.vertical_button_v1/
   Tested with Jeedom V4.3.20
 -->
   <div class="title #hide_name#">
     <div class="cmdName">#name_display#</div>
   </div>
   <div class="content-sm">
-    <input type="text" class="input-sm form-control in_value#id# hidden" value="#state# #unite#" disabled/>
+    <center>
+    <input type="text" class="input-sm form-control in_value#id# hidden" value="#state#" disabled/>
     <a class="btn#id# btn-top#id# bt_plus"><i class="fa fa-plus"></i></a>
-    <div id="slider-vertical" class="slider slider#id#">
+    <div id="slider-vertical#id#" class="slider slider#id#">
       <div class="value#id#">#state#</div>
     </div>
     <a class="btn#id# btn-bottom#id# bt_minus"><i class="fas fa-minus"></i></a>
+    </center>
   </div>
   <style>
     :root {
@@ -51,7 +53,7 @@
     .slider#id# .ui-slider-handle.ui-corner-all.ui-state-default {
       display: none;
     }
-    .ui-slider.ui-slider-vertical .ui-slider-range {
+    .slider#id#.ui-slider.ui-slider-vertical .ui-slider-range {
       left: unset !important;
       width: 100% !important;
     }
@@ -125,8 +127,7 @@
     if (is_numeric('#notifUpdate#') && '#notifUpdate#' == '0') notifUpdate#id# = false
     if ($.issetWidgetOptParam('#notifUpdateColor#', 'notifUpdateColor')) document.documentElement.style.setProperty('--notif-color#id#', '#notifUpdateColor#')
     
-    
-    $( "#slider-vertical" ).slider({
+    $( "#slider-vertical#id#" ).slider({
       orientation: "vertical",
       range: "min",
       min: #minValue#,
@@ -147,7 +148,7 @@
     })
     
     jeedom.cmd.addUpdateFunction('#id#', function(_options) {
-      let sliderValue = $( "#slider-vertical" ).slider( "option", "value" )
+      let sliderValue = $( "#slider-vertical#id#" ).slider( "option", "value" )
       let cmd = $('.cmd[data-cmd_uid=#uid#]')
       let position = _options.value
       let minValue = ('#minValue#' == '') ? 0 : parseInt('#minValue#')
@@ -161,7 +162,7 @@
         }, 900)
       }
       if (position != sliderValue) {
-        $( "#slider-vertical" ).slider( "value", position );
+        $( "#slider-vertical#id#" ).slider( "value", position );
         $('.cmd[data-cmd_uid=#uid#] .in_value#id#').val(position)
         $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').empty().append(position)
       }
