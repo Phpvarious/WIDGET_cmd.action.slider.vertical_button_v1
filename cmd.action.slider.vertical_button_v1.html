@@ -2,7 +2,7 @@
   <!-- ################ Slider Vertical Button v1 ################ 
   Widget name : cmd.action.slider.vertical_button_v1
   Author : Phpvarious
-  Version : 2023/12/15 21h05
+  Version : 2023/12/15 22h00
   Link : https://phpvarious.github.io/documentation/widget/fr_FR/action/slider/cmd.action.slider.vertical_button_v1/
   Tested with Jeedom V4.3.20
 -->
@@ -28,7 +28,7 @@
       --background#id# : var(--el-defaultColor);
       --slider-background#id# : var(--link-color);
       --text-color#id# : var(--txt-color);
-      --font-size#id# : 18px;
+      --font-size#id# : 22px;
       --notif-color#id# : var(--logo-primary-color);
     }
     .slider#id# {
@@ -93,6 +93,7 @@
       font-weight: bold;
       line-height: 0px;
       min-width: 18px;
+      white-space: nowrap;
     }
   </style>
   <template>
@@ -113,7 +114,13 @@
     var step#id# = 1
     var showValue#id# = true
     var notifUpdate#id# = true
-    if (is_numeric('#width#')) document.documentElement.style.setProperty('--width#id#', '#width#' + 'px')
+    var maxSizeValue#id# = 22
+    var width#id# = 40
+    if (is_numeric('#width#')) {
+      document.documentElement.style.setProperty('--width#id#', '#width#' + 'px')
+      width#id# = parseInt('#width#')
+      if (width#id# < 18) width#id# = 18
+    }
     if (is_numeric('#height#')) document.documentElement.style.setProperty('--height#id#', '#height#' + 'px')
     if ($.issetWidgetOptParam('#step#', 'step')) step#id# = parseFloat('#step#')
     if ($.issetWidgetOptParam('#backgroundBt#', 'backgroundBt')) document.documentElement.style.setProperty('--bt-background#id#', '#backgroundBt#')
@@ -121,7 +128,10 @@
     if ($.issetWidgetOptParam('#backgroundSlider#', 'backgroundSlider')) document.documentElement.style.setProperty('--background#id#', '#backgroundSlider#')
     if ($.issetWidgetOptParam('#colorCurseur#', 'colorCurseur')) document.documentElement.style.setProperty('--slider-background#id#', '#colorCurseur#')
     if ($.issetWidgetOptParam('#colorValue#', 'colorValue')) document.documentElement.style.setProperty('--text-color#id#', '#colorValue#')
-    if (is_numeric('#sizeValue#')) document.documentElement.style.setProperty('--font-size#id#', '#sizeValue#' + 'px')
+    if (is_numeric('#sizeValue#')) {
+      maxSizeValue#id# = (parseInt('#sizeValue#') > parseInt(width#id# * 0.57)) ? parseInt(width#id# * 0.57) : parseInt('#sizeValue#')
+      document.documentElement.style.setProperty('--font-size#id#', maxSizeValue#id# + 'px')
+    }
     if (is_numeric('#hideValue#') && '#hideValue#' == '1') {
       showValue#id# = false
       $('.cmd[data-cmd_uid=#uid#]').find('.value#id#').hide()
