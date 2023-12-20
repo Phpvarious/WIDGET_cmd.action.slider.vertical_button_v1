@@ -2,21 +2,24 @@
   <!-- ################ Slider Vertical Button v1 ################ 
   Widget name : cmd.action.slider.vertical_button_v1
   Author : Phpvarious
-  Version : 2023/12/15 22h25
+  Version : 2023/12/20 19h40
   Link : https://phpvarious.github.io/documentation/widget/fr_FR/action/slider/cmd.action.slider.vertical_button_v1/
   Tested with Jeedom V4.3.20
+  from the code : https://codepen.io/jessecfisher/pen/dymYdG
 -->
   <div class="title #hide_name#">
     <div class="cmdName">#name_display#</div>
   </div>
   <div class="content-sm">
     <center>
-    <input type="text" class="input-sm form-control in_value#id# hidden" value="#state#" disabled/>
-    <a class="btn#id# btn-top#id# bt_plus"><i class="fa fa-plus"></i></a>
-    <div id="slider-vertical#id#" class="slider slider#id#">
-      <div class="value#id#">#state#</div>
-    </div>
-    <a class="btn#id# btn-bottom#id# bt_minus"><i class="fas fa-minus"></i></a>
+      <div id="typeSlider#id#">
+        <input type="text" class="input-sm form-control in_value#id# hidden" value="#state#" disabled/>
+        <a id="bt1-#id#" class="btn#id# btn-top#id#"></a>
+        <div id="slider-vertical#id#" class="slider slider#id#">
+          <div class="value#id#">#state#</div>
+        </div>
+        <a id="bt2-#id#" class="btn#id# btn-bottom#id#"></a>
+      </div>
     </center>
   </div>
   <style>
@@ -33,12 +36,21 @@
     }
     .slider#id# {
       position: relative;
-      margin: 0 32px !important;
       height: var(--height#id#) !important;
       display: block;
       width: var(--width#id#) !important;
       border-radius: 0px;
+    }
+    
+    .vertical#id# .slider#id# {
+      /* margin: 0 32px !important;*/
       min-width: 18px;
+    }
+    .horizontal#id# .slider#id#{
+      min-width: 40px;
+    }
+    .slider#id#.ui-slider.ui-state-disabled {
+      opacity: 1;
     }
     .slider#id# div.ui-slider-range {
       display: block;
@@ -54,9 +66,14 @@
       display: none;
     }
     .slider#id#.ui-slider.ui-slider-vertical .ui-slider-range {
-      left: unset !important;
-      width: 100% !important;
+     width : 100% !important;
+     left: 0px;
     }
+    
+    .slider#id#.ui-slider.ui-slider-horizontal .ui-slider-range {
+      height: 100% !important;
+    }
+    
     .slider#id#.ui-slider .ui-slider-range, .slider#id#.ui-slider .ui-corner-all.ui-slider-range {
       border-radius: 0px !important;
     }
@@ -64,22 +81,61 @@
       background: var(--background#id#) !important;
       cursor: pointer;
     }
+    
+    .horizontal#id# .slider#id#.slider.ui-slider {
+      cursor: col-resize;
+    }
+    .vertical#id# .slider#id#.slider.ui-slider {
+      cursor: row-resize;
+    }
+    
+    .horizontal#id# .slider#id#.slider.ui-slider {
+      float: left;
+      /* margin: 0px !important;*/
+    }
+    .slider#id#.slider.ui-slider {
+      margin: 0px !important;
+    }
+    
     .btn#id# {
       display: inline-block;
       color: var(--bt-color#id#) !important;
       background-color: var(--bt-background#id#) !important;
-      width: var(--width#id#);
-      height: 28px;
+      
       line-height: 16px;
       font-size: 18px;
       padding-top: 5px;
       min-width: 18px;
     }
-    .btn-top#id# {
+    .vertical#id# .btn#id# {
+      width: var(--width#id#);
+      height: 28px;
+    }
+    .horizontal#id# .btn#id# {
+      width: 28px;
+      height: var(--height#id#);
+    }
+    .vertical#id# .btn-top#id# {
       border-radius: 10px 10px 0px 0px;
     }
-    .btn-bottom#id# {
+    .horizontal#id# .btn-top#id# {
+      border-radius: 10px 0px 0px 10px;
+      display: grid;
+      align-content: center;
+      padding-top: 0px;
+      float: left;
+      margin-left: 10px;
+    }
+    .vertical#id# .btn-bottom#id# {
       border-radius: 0px 0px 10px 10px;
+    }
+    .horizontal#id# .btn-bottom#id# {
+      border-radius: 0px 10px 10px 0px;
+      display: grid;
+      align-content: center;
+      padding-top: 0px;
+      float: left;
+      margin-right: 10px;
     }
     .value#id# {
       position: absolute;
@@ -94,6 +150,14 @@
       line-height: 0px;
       min-width: 18px;
       white-space: nowrap;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    .horizontal#id# .value#id# {
+      min-width: 40px;
     }
   </style>
   <template>
@@ -109,6 +173,8 @@
     <div>hideValue : Masque la valeur lorsque qu'il n'y a pas de mouvement du curseur. [ défaut : 0 ]</div>
     <div>notifUpdate : Change la couleur de la valeur lors d'un update. [ défaut : 1 ]</div>
     <div>notifUpdateColor : Couleur de la valeur lors d'un update. [ défaut : #96c927 ]</div>
+    <div>horizontal : Affiche le slider horizontalement. [ défaut : 0 (vertical) ]</div>
+    <div>disableSlider : Désactive le slider. [ défaut : 0 (activé) ]</div>
   </template>
   <script>
     var step#id# = 1
@@ -116,6 +182,9 @@
     var notifUpdate#id# = true
     var maxSizeValue#id# = 22
     var width#id# = 40
+    var type#id# = 'vertical'
+    var disableSlider#id# = false
+    
     if (is_numeric('#width#')) {
       document.documentElement.style.setProperty('--width#id#', '#width#' + 'px')
       width#id# = parseInt('#width#')
@@ -139,11 +208,32 @@
     if (is_numeric('#notifUpdate#') && '#notifUpdate#' == '0') notifUpdate#id# = false
     if ($.issetWidgetOptParam('#notifUpdateColor#', 'notifUpdateColor')) document.documentElement.style.setProperty('--notif-color#id#', '#notifUpdateColor#')
     
+    if ('#horizontal#' == '1') type#id# = 'horizontal'
+    document.getElementById('typeSlider#id#').className = type#id# + '#id#'
+    
+    if (type#id# == 'vertical') {
+      document.getElementById('bt1-#id#').classList.add("bt_plus");
+      document.getElementById('bt2-#id#').classList.add("bt_minus");
+      $('#bt1-#id#').empty().append('<i class="fa fa-plus">')
+      $('#bt2-#id#').empty().append('<i class="fas fa-minus">')
+    }
+    else
+    {
+      document.getElementById('bt1-#id#').classList.add("bt_minus");
+      document.getElementById('bt2-#id#').classList.add("bt_plus");
+      $('#bt1-#id#').empty().append('<i class="fas fa-minus">')
+      $('#bt2-#id#').empty().append('<i class="fa fa-plus">')
+    }
+    
+    if ('#disableSlider#' == '1') disableSlider#id# = true
+    
+    
     $( "#slider-vertical#id#" ).slider({
-      orientation: "vertical",
+      orientation: type#id#,
       range: "min",
       min: #minValue#,
       max: #maxValue#,
+      disabled : disableSlider#id#,
       value: ('#state#' == '') ? #minValue# : '#state#',
       unite: '#unite#',
       step: step#id#,
