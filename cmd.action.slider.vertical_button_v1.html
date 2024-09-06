@@ -2,7 +2,7 @@
   <!-- ################ Slider Vertical Button v1 ################ 
   Widget name : cmd.action.slider.vertical_button_v1
   Author : Phpvarious
-  Version : 2023/12/20 19h40
+  Version : 2024/09/06 15h10
   Link : https://phpvarious.github.io/documentation/widget/fr_FR/action/slider/cmd.action.slider.vertical_button_v1/
   Tested with Jeedom V4.3.20
   from the code : https://codepen.io/jessecfisher/pen/dymYdG
@@ -175,6 +175,7 @@
     <div>notifUpdateColor : Couleur de la valeur lors d'un update. [ défaut : #96c927 ]</div>
     <div>horizontal : Affiche le slider horizontalement. [ défaut : 0 (vertical) ]</div>
     <div>disableSlider : Désactive le slider. [ défaut : 0 (activé) ]</div>
+    <div>hideButtons : Masque les boutons + et -. [ défaut : 0 (affiché) ]</div>
   </template>
   <script>
     var step#id# = 1
@@ -197,6 +198,10 @@
     if ($.issetWidgetOptParam('#backgroundSlider#', 'backgroundSlider')) document.documentElement.style.setProperty('--background#id#', '#backgroundSlider#')
     if ($.issetWidgetOptParam('#colorCurseur#', 'colorCurseur')) document.documentElement.style.setProperty('--slider-background#id#', '#colorCurseur#')
     if ($.issetWidgetOptParam('#colorValue#', 'colorValue')) document.documentElement.style.setProperty('--text-color#id#', '#colorValue#')
+    if (is_numeric('#hideButtons#') && '#hideButtons#' == 1) {
+      document.getElementById('bt1-#id#').unseen()
+      document.getElementById('bt2-#id#').unseen()   
+    }
     if (is_numeric('#sizeValue#')) {
       maxSizeValue#id# = (parseInt('#sizeValue#') > parseInt(width#id# * 0.57)) ? parseInt(width#id# * 0.57) : parseInt('#sizeValue#')
       document.documentElement.style.setProperty('--font-size#id#', maxSizeValue#id# + 'px')
