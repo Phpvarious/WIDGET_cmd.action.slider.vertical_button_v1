@@ -2,9 +2,9 @@
   <!-- ################ Slider Vertical Button v1 ################ 
   Widget name : cmd.action.slider.vertical_button_v1
   Author : Phpvarious
-  Version : 2024/09/06 15h10
+  Version : 2024/11/16 10h20
   Link : https://phpvarious.github.io/documentation/widget/fr_FR/action/slider/cmd.action.slider.vertical_button_v1/
-  Tested with Jeedom V4.3.20
+  Tested with Jeedom V4.4.19
   from the code : https://codepen.io/jessecfisher/pen/dymYdG
 -->
   <div class="title #hide_name#">
@@ -279,7 +279,8 @@
       let max = ('#maxValue#' == '') ?  100 : parseFloat('#maxValue#')
       let step = (isNaN(parseFloat('#step#'))) ?  1 : parseFloat('#step#')
       if (parseFloat($('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()) <= max - step ) {
-        jeedom.cmd.refreshValue([{cmd_id :'#id#',value: parseFloat($('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()) + step, trigger :'bt_plus'}] )
+        let value = (parseFloat($('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()) * 100 + step * 100) / 100
+        jeedom.cmd.refreshValue([{cmd_id :'#id#',value: value, trigger :'bt_plus'}] )
         $('.cmd[data-cmd_uid=#uid#] .in_value#id#').trigger('change')
       }
     })
@@ -288,7 +289,8 @@
       let min = ('#minValue#' == '') ? 0 : parseFloat('#minValue#')
       let step = (isNaN(parseFloat('#step#'))) ?  1 : parseFloat('#step#')
       if (parseFloat($('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()) >= min + step) {
-        jeedom.cmd.refreshValue([{cmd_id :'#id#',value: parseFloat($('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()) - step, trigger :'bt_minus'}])
+        let value = (parseFloat($('.cmd[data-cmd_uid=#uid#] .in_value#id#').val()) * 100 - step * 100) / 100
+        jeedom.cmd.refreshValue([{cmd_id :'#id#',value: value, trigger :'bt_minus'}])
         $('.cmd[data-cmd_uid=#uid#] .in_value#id#').trigger('change')
       }
     })
